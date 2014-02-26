@@ -4,9 +4,10 @@ module load gcc
 module load bioinfo-tools
 module load bowtie/0.12.8
 
-# names of the forward and reverse reads
-forward=$1 # (`ls /dev/shm/$1/f*.fastq`)
-#reverse=(`ls /dev/shm/$1/r*.fastq`)
+# names of the forward and reverse read files
+forward=(`ls $1/f*.fastq`)
+reverse=(`ls $1/r*.fastq`)
+echo "ggggggggggggg"  $forward
 
 # ===============
 # the following piece of code determines the 
@@ -28,12 +29,12 @@ for (( i=0; i<${headerArrLength}; i++ ));do
 	fi
 done
 startLine=${arr1[$i]} 
-echo $startLine
+echo "start line " $startLine
 # prints the starting line
 sed -ne "$startLine"p $forward
 #===============
 
-name=tair10dataset4;
-cd /scratch/$1
+name=tair10_TEST;
+cd $1
 /usr/bin/time -f "%e Alignment  Real Time (secs)"\
-		bowtie  -S -p 16 a_thaliana -X 600 --chunkmbs 400  -M 1 --best -1 <(sed -ne $startLine',$p'  $forward) -2<(sed -ne "$startLine"',$p'  $reverse)  $name.sam
+		bowtie  -S -p 16 a_thaliana -X 600 --chunkmbs 400  -1 <(sed -ne $startLine',$p'  $forward) -2<(sed -ne "$startLine"',$p'  $reverse)  $name.sam
