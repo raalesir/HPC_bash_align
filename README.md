@@ -1,3 +1,8 @@
+Overview
+-------
+There two sets of Bash scripts. The hpcPipeline.sh is for the ordinary pipeline but as multithreaded as possible.
+The distributedBowtie.sh and runBowtieRemote.sh are the HPC storage with supported striping of data. Uses multiple nodes to map reads.
+
 hpcPipeline.sh
 -------------
 Implements 'standard' pipeline: reads mapping and SNP calling with the Bowtie and Samtools correspondingly.
