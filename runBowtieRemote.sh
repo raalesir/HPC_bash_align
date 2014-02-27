@@ -7,7 +7,8 @@ module load bowtie/0.12.8
 # names of the forward and reverse read files
 forward=(`ls $1/f*.fastq`)
 reverse=(`ls $1/r*.fastq`)
-echo "ggggggggggggg"  $forward
+echo "forward reads"  $forward
+echo "reverse reads"  $reverse
 
 # ===============
 # the following piece of code determines the 
@@ -34,6 +35,7 @@ echo "start line " $startLine
 sed -ne "$startLine"p $forward
 #===============
 
+# some name for the SAM file...
 name=tair10_TEST;
 cd $1
 /usr/bin/time -f "%e Alignment  Real Time (secs)"\
