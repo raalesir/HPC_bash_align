@@ -1,7 +1,6 @@
 #!/bin/bash -l
 #SBATCH -A staff --qos=short #b2013023 #--qos=short 
 #SBATCH -p node
-##SBATCH --nodelist=m141,m167,m163,m159
 #SBATCH -n 2 -N 2
 #SBATCH -t 0:15:00
 #SBATCH -J dist_test
@@ -35,8 +34,8 @@ count=$(($blockPerNode/$bs))
 
 echo partition size is: $blockPerNode
 
-# dd copies in parallel chunks of data for each node
-# and the reference genome after.
+# dd copies chunks of the files to each node in parallel
+# and the reference genome after...
 ofPath=/dev/shm/$SLURM_JOB_ID
 for ((i=0; i<$nNodes; i++));do
 	skip=$(($i*$count)); echo $skip
@@ -55,9 +54,9 @@ mkdir -p $outDir
 cat slurm-$SLURM_JOB_ID.out |grep bytes|cut -f6 -d' '|sort > $outDir/dist$step 
 cat slurm-$SLURM_JOB_ID.out |grep copied|cut -f8 -d' '|sort >$outDir/speed$step
 
-# remotely executing the "cutLines.sh" to align the reads
+# remotely executing the "runBowtieRemote.sh" to align the reads
 # and copying the SAM files from the nodes to the
-# $root/striped$series\_$nNodes/mergedSam$i files
+# $root/$outDir/mergedSam$i files
 root=`pwd`
 for ((i=0; i<$nNodes; i++));do
 	(ssh ${nodes[$i]} '/bin/bash -sl'  < ./runBowtieRemote.sh $ofPath && echo $ofPath &&	
