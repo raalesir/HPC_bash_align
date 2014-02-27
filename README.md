@@ -2,7 +2,7 @@ hpcPipeline.sh
 -------------
 Implements 'standard' pipeline: reads mapping and SNP calling with the Bowtie and Samtools correspondingly.
 Both Bowtie and Samtools are utilizing the multicore  parallelization.
-
+The script is to be submitted to SLURM.
 
 distributedBowtie.sh and runBowtieRemote.sh
 ------------------
@@ -12,3 +12,5 @@ The storage can stripe the data, meaning that the different pieces of the file c
 The dd utility is used to pull the chunks of the data from the storage to the local node scratches in _parallel_.
 After the chunks delivery, the chunks are passed some filtering to satisfy the Bowtie format.
 The mapping is done in the multicore regime, OMP parallelism. The resulting SAM files are pushed back to the high-preformance storage.
+
+The _distributedBowtie.sh_ is being submitted to SLURM and calls the _runBowtieRemote.sh_ remotely on each submitted node.
